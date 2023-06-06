@@ -33,7 +33,7 @@ let projectData = {
         temp: 36,
         feeling: 'Excited',
         date: 'Sat Jun 05 2023',
-        icon: '01d'
+        icon: '03n'
       }
 };
 require('dotenv').config();
@@ -86,14 +86,14 @@ async function addNewEntry(request, response) {
 
     let userData = {
         name: weather_data.name,
-        temp: ( weather_data.main.temp, - 32) * 5 / 9,
+        temp: (( weather_data.main.temp  - 32) * 5 / 9).toFixed(1),
         feeling: data.feeling,
         date: new Date().toDateString(),
         icon: weather_data.weather[0].icon
     };
     
     projectData[uniqueID] = userData;
-    response.send(userData);
+    response.send({"weatherData":weather_data ,"userData":userData});
     }
     catch (error) {
     console.log(error);
@@ -102,13 +102,13 @@ async function addNewEntry(request, response) {
 }
 
 
-// For API
+// For weather check API
 app.post('/check', checkWeather);
 
 async function checkWeather(request, response){
     let data = request.body;
     try{
-    let weather_data = await getCurrentWeather(true, data.lat, data.lon, "", "");
+    let weather_data = await getCurrentWeather(false, data.lat, data.lon, "", "");
     if(weather_data.cod == 400){
         throw new Error("Not found")
     }
@@ -131,7 +131,7 @@ async function getCurrentWeather (isZip, lat, lon, zip, cc) {
      baseURL = `https://api.openweathermap.org/data/2.5/weather?zip=${zip}`+","+`${cc}&appid=`;
     }
     const apiKey = API_KEY;
-    const apiURL = baseURL + apiKey;
+    const apiURL = baseURL + apiKey + "&units=imperial";
     
     const res = await fetch(apiURL)
     try {
