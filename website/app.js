@@ -7,7 +7,7 @@ let hour = d.getHours()
 let lat = 0;
 let lon = 0;
 let jsonData = [];
-let serverURL = "http://localhost:3000/";
+let serverURL = "http://127.0.0.1:3000/";
 if (hour < 6 || hour >= 18) {
   document.body.classList.toggle("night");
   document.getElementById("entryHolder").style.background = "#ffffff47";
@@ -69,7 +69,7 @@ function createCard(name, date, icon, temp, feeling) {
   // Create the temperature paragraph element
   let tempElem = document.createElement('p');
   tempElem.id = 'temp';
-  tempElem.textContent = temp;
+  tempElem.textContent = temp+"°C";
 
   // Append the elements to their respective parent elements
   cardContent.appendChild(locationElem);
